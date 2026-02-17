@@ -1,14 +1,17 @@
+// src/store/authStore.js
+
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api';
 
-// Mock users for testing (since we're not connecting to real backend yet)
+// Mock users for testing
 const MOCK_USERS = {
   '976957649': { // Existing user
     _id: '1',
-    name: 'John Doe',
+    firstName: 'John',
+    lastName: 'Doe',
     phone: '976957649',
     fitnessLevel: 'beginner',
     age: 28,
@@ -16,6 +19,7 @@ const MOCK_USERS = {
     height: 175,
     weight: 70,
     primaryGoal: 'lose_weight',
+    category: 'adult',
     hasProfile: true,
     profileCompleted: true
   },
@@ -50,7 +54,7 @@ const useAuthStore = create(
         }
       },
 
-      // Updated login to work with phone and OTP
+      // Login with phone and OTP
       login: async (phone, otp) => {
         set({ isLoading: true });
         
@@ -90,7 +94,8 @@ const useAuthStore = create(
             const newUser = {
               _id: 'new-' + Date.now(),
               phone: phone,
-              name: '', // Will be filled during onboarding
+              firstName: '',
+              lastName: '',
               hasProfile: false,
               profileCompleted: false
             };
@@ -153,12 +158,24 @@ const useAuthStore = create(
           
           const currentUser = get().user;
           
+          // Determine category based on age
+          let category = 'adult';
+          if (profileData.age) {
+            const age = parseInt(profileData.age);
+            if (age < 13) category = 'kids';
+            else if (age >= 13 && age <= 19) category = 'teenage';
+            else if (age >= 20 && age <= 55) category = 'adult';
+            else if (age > 55) category = 'elderly';
+          }
+          
           // Merge existing user data with new profile data
           const updatedUser = {
             ...currentUser,
             ...profileData,
+            category,
             hasProfile: true,
-            profileCompleted: true
+            profileCompleted: true,
+            fullName: `${profileData.firstName || ''} ${profileData.lastName || ''}`.trim()
           };
           
           set({ 
@@ -168,8 +185,10 @@ const useAuthStore = create(
             isLoading: false 
           });
           
-          // In a real app, you would save this to your backend
-          // await axios.post(`${API_URL}/users/profile`, profileData);
+          // Also save to mock users for persistence
+          if (updatedUser.phone) {
+            MOCK_USERS[updatedUser.phone] = updatedUser;
+          }
           
           return { success: true };
         } catch (error) {
@@ -184,15 +203,33 @@ const useAuthStore = create(
       // Update user profile
       updateUserProfile: (profileData) => {
         const currentUser = get().user;
+        
+        // Determine category based on age if age is provided
+        let category = currentUser?.category;
+        if (profileData.age) {
+          const age = parseInt(profileData.age);
+          if (age < 13) category = 'kids';
+          else if (age >= 13 && age <= 19) category = 'teenage';
+          else if (age >= 20 && age <= 55) category = 'adult';
+          else if (age > 55) category = 'elderly';
+        }
+        
         const updatedUser = {
           ...currentUser,
-          ...profileData
+          ...profileData,
+          category: category || profileData.category || currentUser?.category || 'adult',
+          profileCompleted: true
         };
         
         set({ 
           user: updatedUser,
           profileCompleted: true
         });
+        
+        // Update mock users
+        if (updatedUser.phone && MOCK_USERS[updatedUser.phone]) {
+          MOCK_USERS[updatedUser.phone] = updatedUser;
+        }
         
         return { success: true };
       },
@@ -236,14 +273,25 @@ const useAuthStore = create(
         }
       },
 
+      // FIXED: Logout function
       logout: () => {
+        // Clear all auth state
         set({ 
           user: null, 
           token: null,
           hasProfile: false,
-          profileCompleted: false 
+          profileCompleted: false,
+          isLoading: false
         });
+        
+        // Remove axios authorization header
         delete axios.defaults.headers.common['Authorization'];
+        
+        // Clear localStorage (persist middleware will handle this)
+        // But we can also explicitly clear it
+        localStorage.removeItem('habesha-fit-auth');
+        
+        console.log('Logout successful - user state cleared');
       },
 
       updateProfileStatus: (hasProfile, completed) => {
@@ -255,7 +303,13 @@ const useAuthStore = create(
     }),
     {
       name: 'habesha-fit-auth',
-      getStorage: () => localStorage
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ 
+        user: state.user,
+        token: state.token,
+        hasProfile: state.hasProfile,
+        profileCompleted: state.profileCompleted
+      }),
     }
   )
 );

@@ -1,566 +1,935 @@
-// src/data/WorkoutTypes.js
+// src/data/WorkoutTypes.jsx
 
-export const workoutCategories = {
-  pushups: {
-    id: 'pushups',
-    name: 'Push-ups',
+// Kids Exercises (4-12 years)
+export const kidsWorkouts = {
+  playful: {
+    id: 'playful',
+    name: 'Play & Move',
+    icon: '🧸',
+    description: 'Fun exercises that feel like playtime',
+    color: 'linear-gradient(135deg, #FF9800, #FF5722)',
+    exercises: [
+      {
+        id: 'kids-animal-walks',
+        name: 'Animal Walks',
+        difficulty: 'Fun',
+        duration: '5 minutes',
+        image: '🐻',
+        description: 'Walk like different animals',
+        instructions: [
+          'Bear walk: Walk on hands and feet',
+          'Crab walk: Walk on hands and feet facing up',
+          'Frog jumps: Squat and jump like a frog',
+          'Penguin waddle: Walk with feet together'
+        ],
+        benefits: [
+          'Builds coordination',
+          'Strengthens muscles',
+          'Develops motor skills',
+          'Makes exercise fun'
+        ],
+        tips: [
+          'Make animal sounds for fun',
+          'Race with friends',
+          'Create obstacle courses'
+        ]
+      },
+      {
+        id: 'kids-freeze-dance',
+        name: 'Freeze Dance',
+        difficulty: 'Fun',
+        duration: '10 minutes',
+        image: '💃',
+        description: 'Dance and freeze when music stops',
+        instructions: [
+          'Play fun music',
+          'Dance around freely',
+          'Freeze when music stops',
+          'Hold pose until music starts again'
+        ],
+        benefits: [
+          'Improves listening skills',
+          'Develops balance',
+          'Great cardio workout',
+          'Builds body control'
+        ],
+        tips: [
+          'Make silly poses when freezing',
+          'Play different music styles',
+          'Encourage creativity'
+        ]
+      },
+      {
+        id: 'kids-balloon-volleyball',
+        name: 'Balloon Volleyball',
+        difficulty: 'Fun',
+        duration: '10 minutes',
+        image: '🎈',
+        description: 'Keep the balloon off the ground',
+        instructions: [
+          'Blow up a balloon',
+          'Hit it back and forth',
+          'Don\'t let it touch the ground',
+          'Count how many hits you can do'
+        ],
+        benefits: [
+          'Improves hand-eye coordination',
+          'Develops gross motor skills',
+          'Encourages teamwork',
+          'Fun cardio exercise'
+        ],
+        tips: [
+          'Use multiple balloons',
+          'Create teams',
+          'Set up a "net" with string'
+        ]
+      },
+      {
+        id: 'kids-obstacle-course',
+        name: 'Indoor Obstacle Course',
+        difficulty: 'Fun',
+        duration: '15 minutes',
+        image: '🏃',
+        description: 'Create fun obstacle challenges',
+        instructions: [
+          'Crawl under chairs',
+          'Jump over pillows',
+          'Walk on a straight line (balance beam)',
+          'Do 5 jumping jacks at each station'
+        ],
+        benefits: [
+          'Full body workout',
+          'Develops problem-solving',
+          'Builds coordination',
+          'Encourages creativity'
+        ],
+        tips: [
+          'Use pillows and cushions',
+          'Time each round',
+          'Let kids design the course'
+        ]
+      },
+      {
+        id: 'kids-simon-says',
+        name: 'Simon Says Workout',
+        difficulty: 'Fun',
+        duration: '10 minutes',
+        image: '🎮',
+        description: 'Follow instructions in this classic game',
+        instructions: [
+          'Simon says: touch your toes',
+          'Simon says: do 5 jumps',
+          'Simon says: spin around',
+          'If Simon doesn\'t say, don\'t move!'
+        ],
+        benefits: [
+          'Improves listening skills',
+          'Makes exercise playful',
+          'Develops body awareness',
+          'Builds focus'
+        ],
+        tips: [
+          'Use funny movements',
+          'Speed up the commands',
+          'Let kids be Simon'
+        ]
+      }
+    ]
+  },
+  
+  strength: {
+    id: 'strength',
+    name: 'Super Strength',
     icon: '💪',
-    description: 'Build upper body strength with these push-up variations',
-    color: 'linear-gradient(135deg, #FF416C, #FF4B2B)',
+    description: 'Build strong muscles like a superhero',
+    color: 'linear-gradient(135deg, #FF5722, #F44336)',
     exercises: [
       {
-        id: 'pushup-basic',
-        name: 'Basic Push-up',
-        difficulty: 'Beginner',
-        duration: '3 sets × 10 reps',
-        image: '💪',
-        description: 'The foundation of all push-up variations',
-        instructions: [
-          'Start in plank position with hands shoulder-width apart',
-          'Lower your body until chest nearly touches the ground',
-          'Keep your back straight and core engaged',
-          'Push back up to starting position',
-          'Exhale while pushing up, inhale while lowering'
-        ],
-        benefits: [
-          'Builds chest, shoulder, and tricep strength',
-          'Improves core stability',
-          'Enhances upper body endurance'
-        ],
-        tips: [
-          'Keep elbows at 45 degrees from body',
-          'Don\'t let hips sag',
-          'Breathe steadily throughout'
-        ]
-      },
-      {
-        id: 'pushup-wide',
-        name: 'Wide Push-up',
-        difficulty: 'Intermediate',
+        id: 'kids-superhero-squats',
+        name: 'Superhero Squats',
+        difficulty: 'Easy',
         duration: '3 sets × 8 reps',
-        image: '💪',
-        description: 'Places more emphasis on chest muscles',
+        image: '🦸',
+        description: 'Squats with superhero style',
         instructions: [
-          'Place hands wider than shoulder-width apart',
-          'Lower your body with elbows pointing outward',
-          'Keep core tight and back straight',
-          'Push through palms to return to start'
-        ],
-        benefits: [
-          'Targets outer chest muscles',
-          'Increases chest width',
-          'Builds shoulder stability'
-        ],
-        tips: [
-          'Don\'t go too wide to avoid shoulder strain',
-          'Control the movement, avoid bouncing'
-        ]
-      },
-      {
-        id: 'pushup-diamond',
-        name: 'Diamond Push-up',
-        difficulty: 'Advanced',
-        duration: '3 sets × 6 reps',
-        image: '💎',
-        description: 'Intense tricep and inner chest focus',
-        instructions: [
-          'Place hands together forming a diamond shape',
-          'Keep elbows close to body',
-          'Lower your chest toward your hands',
-          'Push through triceps to return'
-        ],
-        benefits: [
-          'Targets triceps intensely',
-          'Builds inner chest',
-          'Improves arm definition'
-        ],
-        tips: [
-          'Start with knees on floor if too difficult',
-          'Keep wrists strong and aligned'
-        ]
-      },
-      {
-        id: 'pushup-decline',
-        name: 'Decline Push-up',
-        difficulty: 'Intermediate',
-        duration: '3 sets × 8 reps',
-        image: '📈',
-        description: 'Emphasizes upper chest and shoulders',
-        instructions: [
-          'Place feet on elevated surface',
-          'Hands on floor shoulder-width apart',
-          'Lower chest toward ground',
-          'Push back up explosively'
-        ],
-        benefits: [
-          'Targets upper chest',
-          'Increases shoulder engagement',
-          'Builds explosive power'
-        ],
-        tips: [
-          'Start with low elevation',
-          'Progress to higher elevation'
-        ]
-      },
-      {
-        id: 'pushup-incline',
-        name: 'Incline Push-up',
-        difficulty: 'Beginner',
-        duration: '3 sets × 12 reps',
-        image: '📉',
-        description: 'Easier variation for beginners',
-        instructions: [
-          'Place hands on elevated surface',
-          'Keep body straight from head to heels',
-          'Lower chest to the surface',
-          'Push back up'
-        ],
-        benefits: [
-          'Builds foundation strength',
-          'Easier on wrists',
-          'Great warm-up exercise'
-        ],
-        tips: [
-          'Lower the surface height as you progress',
-          'Maintain straight body line'
-        ]
-      },
-      {
-        id: 'pushup-clapping',
-        name: 'Clapping Push-up',
-        difficulty: 'Advanced',
-        duration: '3 sets × 5 reps',
-        image: '👏',
-        description: 'Explosive plyometric push-up variation',
-        instructions: [
-          'Start in push-up position',
-          'Lower explosively',
-          'Push up with enough force to clap hands',
-          'Land softly and repeat'
-        ],
-        benefits: [
-          'Builds explosive power',
-          'Enhances muscle fiber recruitment',
-          'Improves athletic performance'
-        ],
-        tips: [
-          'Warm up thoroughly first',
-          'Land with soft elbows'
-        ]
-      }
-    ]
-  },
-  
-  situps: {
-    id: 'situps',
-    name: 'Sit-ups',
-    icon: '🔄',
-    description: 'Core strengthening exercises for a strong midsection',
-    color: 'linear-gradient(135deg, #11998e, #38ef7d)',
-    exercises: [
-      {
-        id: 'situp-basic',
-        name: 'Basic Sit-up',
-        difficulty: 'Beginner',
-        duration: '3 sets × 15 reps',
-        image: '🔄',
-        description: 'Traditional sit-up for core strength',
-        instructions: [
-          'Lie on back with knees bent',
-          'Feet flat on floor',
-          'Place hands behind head or cross on chest',
-          'Curl upper body toward knees',
-          'Lower back down with control'
-        ],
-        benefits: [
-          'Builds abdominal strength',
-          'Improves hip flexibility',
-          'Enhances core stability'
-        ],
-        tips: [
-          'Don\'t pull on neck',
-          'Use core muscles, not momentum',
-          'Exhale when curling up'
-        ]
-      },
-      {
-        id: 'situp-weighted',
-        name: 'Weighted Sit-up',
-        difficulty: 'Intermediate',
-        duration: '3 sets × 10 reps',
-        image: '🏋️',
-        description: 'Added resistance for advanced core development',
-        instructions: [
-          'Hold weight plate against chest',
-          'Perform basic sit-up motion',
-          'Control both up and down movements',
-          'Keep core engaged throughout'
-        ],
-        benefits: [
-          'Increases core strength',
-          'Builds muscle definition',
-          'Progressive overload'
-        ],
-        tips: [
-          'Start with light weight',
-          'Focus on form over weight'
-        ]
-      },
-      {
-        id: 'situp-twist',
-        name: 'Twisting Sit-up',
-        difficulty: 'Intermediate',
-        duration: '3 sets × 12 reps each side',
-        image: '🔄',
-        description: 'Engages obliques for a complete core workout',
-        instructions: [
-          'Perform basic sit-up motion',
-          'At the top, twist torso to one side',
-          'Lower back down',
-          'Alternate sides'
-        ],
-        benefits: [
-          'Targets obliques',
-          'Improves rotational strength',
-          'Comprehensive core development'
-        ],
-        tips: [
-          'Twist from waist, not shoulders',
-          'Keep hips stable'
-        ]
-      },
-      {
-        id: 'situp-vup',
-        name: 'V-up',
-        difficulty: 'Advanced',
-        duration: '3 sets × 8 reps',
-        image: 'V',
-        description: 'Advanced movement combining lift and flexibility',
-        instructions: [
-          'Lie flat with arms extended overhead',
-          'Simultaneously lift legs and upper body',
-          'Reach hands toward feet',
-          'Lower with control'
-        ],
-        benefits: [
-          'Full core engagement',
-          'Improves flexibility',
-          'Builds balance and coordination'
-        ],
-        tips: [
-          'Keep legs straight',
-          'Control the descent',
-          'Start with partial range of motion'
-        ]
-      }
-    ]
-  },
-  
-  squats: {
-    id: 'squats',
-    name: 'Squats',
-    icon: '🦵',
-    description: 'Leg and glute strengthening exercises',
-    color: 'linear-gradient(135deg, #8E2DE2, #4A00E0)',
-    exercises: [
-      {
-        id: 'squat-basic',
-        name: 'Basic Squat',
-        difficulty: 'Beginner',
-        duration: '3 sets × 15 reps',
-        image: '🦵',
-        description: 'Foundation of lower body strength',
-        instructions: [
-          'Stand with feet shoulder-width apart',
-          'Keep chest up and back straight',
-          'Lower hips back and down',
-          'Go down until thighs are parallel to ground',
-          'Push through heels to stand'
+          'Stand like a superhero (hands on hips)',
+          'Bend knees like sitting in a chair',
+          'Keep back straight',
+          'Stand back up like flying'
         ],
         benefits: [
           'Builds leg strength',
-          'Engages glutes and core',
-          'Improves mobility'
-        ],
-        tips: [
-          'Keep weight in heels',
-          'Knees should track over toes',
-          'Maintain neutral spine'
-        ]
-      },
-      {
-        id: 'squat-goblet',
-        name: 'Goblet Squat',
-        difficulty: 'Intermediate',
-        duration: '3 sets × 12 reps',
-        image: '🏆',
-        description: 'Weighted squat with dumbbell or kettlebell',
-        instructions: [
-          'Hold weight at chest level',
-          'Perform squat motion',
-          'Keep elbows pointed down',
-          'Push through heels to stand'
-        ],
-        benefits: [
-          'Adds resistance safely',
-          'Improves squat depth',
-          'Builds upper back strength'
-        ],
-        tips: [
-          'Keep weight close to chest',
-          'Don\'t round shoulders'
-        ]
-      },
-      {
-        id: 'squat-jump',
-        name: 'Jump Squat',
-        difficulty: 'Advanced',
-        duration: '3 sets × 8 reps',
-        image: '⬆️',
-        description: 'Explosive plyometric squat variation',
-        instructions: [
-          'Lower into squat position',
-          'Explode upward into jump',
-          'Land softly with control',
-          'Immediately lower into next rep'
-        ],
-        benefits: [
-          'Builds explosive power',
-          'Increases heart rate',
-          'Improves athletic performance'
-        ],
-        tips: [
-          'Land softly on balls of feet',
-          'Keep core tight throughout',
-          'Start with low height jumps'
-        ]
-      }
-    ]
-  },
-  
-  planks: {
-    id: 'planks',
-    name: 'Planks',
-    icon: '📏',
-    description: 'Core stability and endurance exercises',
-    color: 'linear-gradient(135deg, #FF512F, #DD2476)',
-    exercises: [
-      {
-        id: 'plank-basic',
-        name: 'Basic Plank',
-        difficulty: 'Beginner',
-        duration: '3 sets × 30 seconds',
-        image: '📏',
-        description: 'Foundational core stability exercise',
-        instructions: [
-          'Start in push-up position',
-          'Lower onto forearms',
-          'Keep body straight from head to heels',
-          'Engage core and glutes',
-          'Hold position'
-        ],
-        benefits: [
-          'Builds core endurance',
-          'Improves posture',
-          'Strengthens shoulders'
-        ],
-        tips: [
-          'Don\'t let hips sag',
-          'Breathe steadily',
-          'Look at floor to keep neck neutral'
-        ]
-      },
-      {
-        id: 'plank-side',
-        name: 'Side Plank',
-        difficulty: 'Intermediate',
-        duration: '3 sets × 20 seconds each side',
-        image: '📐',
-        description: 'Targets obliques and lateral core',
-        instructions: [
-          'Lie on side with forearm on ground',
-          'Stack feet and lift hips',
-          'Keep body in straight line',
-          'Hold position'
-        ],
-        benefits: [
-          'Strengthens obliques',
           'Improves balance',
-          'Builds shoulder stability'
+          'Develops body control',
+          'Fun way to exercise'
         ],
         tips: [
-          'Keep hips lifted',
-          'Don\'t let shoulders roll forward'
+          'Pretend you\'re flying up',
+          'Add a superhero sound',
+          'Do it in front of a mirror'
         ]
       },
       {
-        id: 'plank-leg-lift',
-        name: 'Plank with Leg Lift',
-        difficulty: 'Advanced',
-        duration: '3 sets × 10 each leg',
-        image: '🦵',
-        description: 'Dynamic plank variation for added challenge',
+        id: 'kids-wall-pushups',
+        name: 'Wall Push-ups',
+        difficulty: 'Easy',
+        duration: '3 sets × 10 reps',
+        image: '🧱',
+        description: 'Easy push-ups against the wall',
         instructions: [
-          'Start in basic plank position',
-          'Lift one leg while keeping hips stable',
-          'Hold for 2 seconds',
-          'Lower and alternate legs'
+          'Stand facing a wall, arms length away',
+          'Place hands on wall at shoulder height',
+          'Bend elbows to lean toward wall',
+          'Push back to starting position'
         ],
         benefits: [
-          'Challenges balance',
-          'Engages glutes',
-          'Increases core activation'
+          'Builds arm strength',
+          'Safe for young joints',
+          'Prepares for floor push-ups',
+          'Improves posture'
         ],
         tips: [
-          'Keep hips level',
-          'Don\'t arch back',
-          'Control the movement'
+          'Stand closer for easier version',
+          'Farther for more challenge',
+          'Make it a game: "push the wall away"'
         ]
       }
     ]
   },
   
-  lunges: {
-    id: 'lunges',
-    name: 'Lunges',
-    icon: '🏃',
-    description: 'Single-leg exercises for balance and strength',
-    color: 'linear-gradient(135deg, #2193b0, #6dd5ed)',
-    exercises: [
-      {
-        id: 'lunge-forward',
-        name: 'Forward Lunge',
-        difficulty: 'Beginner',
-        duration: '3 sets × 10 each leg',
-        image: '➡️',
-        description: 'Basic forward lunging movement',
-        instructions: [
-          'Step forward with one leg',
-          'Lower hips until both knees are bent 90 degrees',
-          'Front knee above ankle, back knee hovering',
-          'Push off front foot to return'
-        ],
-        benefits: [
-          'Builds leg strength unilaterally',
-          'Improves balance',
-          'Stretches hip flexors'
-        ],
-        tips: [
-          'Keep torso upright',
-          'Don\'t let front knee go past toes',
-          'Maintain weight in front heel'
-        ]
-      },
-      {
-        id: 'lunge-reverse',
-        name: 'Reverse Lunge',
-        difficulty: 'Beginner',
-        duration: '3 sets × 10 each leg',
-        image: '⬅️',
-        description: 'Easier on knees, great for beginners',
-        instructions: [
-          'Step backward with one leg',
-          'Lower into lunge position',
-          'Front knee bent 90 degrees',
-          'Push through front heel to return'
-        ],
-        benefits: [
-          'Less knee stress',
-          'Builds stability',
-          'Great for beginners'
-        ],
-        tips: [
-          'Keep front shin vertical',
-          'Control the descent'
-        ]
-      },
-      {
-        id: 'lunge-side',
-        name: 'Side Lunge',
-        difficulty: 'Intermediate',
-        duration: '3 sets × 8 each leg',
-        image: '↔️',
-        description: 'Lateral movement for inner thigh strength',
-        instructions: [
-          'Step wide to the side',
-          'Bend the stepping leg',
-          'Keep other leg straight',
-          'Push off to return to start'
-        ],
-        benefits: [
-          'Targets inner thighs',
-          'Improves lateral movement',
-          'Builds hip strength'
-        ],
-        tips: [
-          'Keep chest up',
-          'Don\'t let knee collapse inward',
-          'Feel stretch in straight leg'
-        ]
-      }
-    ]
-  },
-  
-  stretches: {
-    id: 'stretches',
-    name: 'Stretches',
+  flexibility: {
+    id: 'flexibility',
+    name: 'Stretchy Fun',
     icon: '🧘',
-    description: 'Flexibility and mobility exercises',
-    color: 'linear-gradient(135deg, #5433FF, #20BDFF, #A5FECB)',
+    description: 'Fun stretches and poses',
+    color: 'linear-gradient(135deg, #4CAF50, #8BC34A)',
     exercises: [
       {
-        id: 'stretch-hamstring',
-        name: 'Hamstring Stretch',
-        difficulty: 'Beginner',
-        duration: '30 seconds each leg',
-        image: '🦵',
-        description: 'Stretches back of thighs',
+        id: 'kids-animal-stretches',
+        name: 'Animal Stretches',
+        difficulty: 'Easy',
+        duration: '5 minutes',
+        image: '🐱',
+        description: 'Stretch like your favorite animals',
         instructions: [
-          'Sit with one leg extended',
-          'Reach toward toes',
-          'Keep back straight',
-          'Hold stretch'
+          'Cat stretch: Arch back like a cat',
+          'Downward dog: Make an upside-down V',
+          'Cobra: Stretch up like a snake',
+          'Butterfly: Flap legs like wings'
         ],
         benefits: [
-          'Improves hamstring flexibility',
-          'Reduces lower back tension',
-          'Enhances leg mobility'
+          'Improves flexibility',
+          'Fun and engaging',
+          'Calms the mind',
+          'Develops body awareness'
         ],
         tips: [
-          'Don\'t round back',
-          'Breathe deeply',
-          'Only go to mild tension'
-        ]
-      },
-      {
-        id: 'stretch-quad',
-        name: 'Quad Stretch',
-        difficulty: 'Beginner',
-        duration: '30 seconds each leg',
-        image: '🦵',
-        description: 'Stretches front of thighs',
-        instructions: [
-          'Stand holding wall for balance',
-          'Pull heel toward glutes',
-          'Keep knees together',
-          'Hold stretch'
-        ],
-        benefits: [
-          'Improves quad flexibility',
-          'Reduces knee tension',
-          'Great after leg day'
-        ],
-        tips: [
-          'Keep standing leg slightly bent',
-          'Don\'t arch back',
-          'Pull gently'
+          'Make animal sounds',
+          'Tell a story with poses',
+          'Do it together as a family'
         ]
       }
     ]
   }
 };
 
-// Featured workouts for homepage
+// Teenage Exercises (13-19 years)
+export const teenageWorkouts = {
+  strength: {
+    id: 'strength',
+    name: 'Strength Builder',
+    icon: '💪',
+    description: 'Build functional strength for sports and growth',
+    color: 'linear-gradient(135deg, #9C27B0, #7B1FA2)',
+    exercises: [
+      {
+        id: 'teen-bodyweight-circuit',
+        name: 'Bodyweight Circuit',
+        difficulty: 'Intermediate',
+        duration: '20 minutes',
+        image: '🔄',
+        description: 'Full-body circuit with no equipment',
+        instructions: [
+          '10 Push-ups',
+          '15 Squats',
+          '10 Lunges each leg',
+          '20 Mountain climbers',
+          '30-second Plank',
+          'Rest 60 seconds, repeat 3 times'
+        ],
+        benefits: [
+          'Builds functional strength',
+          'Improves muscular endurance',
+          'No equipment needed',
+          'Great for sports performance'
+        ],
+        tips: [
+          'Focus on form over speed',
+          'Rest only when needed',
+          'Progress to harder variations'
+        ]
+      },
+      {
+        id: 'teen-pullups',
+        name: 'Pull-up Progressions',
+        difficulty: 'Advanced',
+        duration: '3 sets × max reps',
+        image: '⬆️',
+        description: 'Build upper body pulling strength',
+        instructions: [
+          'Start with dead hangs (30 seconds)',
+          'Progress to negative pull-ups',
+          'Try band-assisted pull-ups',
+          'Work toward full pull-ups',
+          'Add weight when strong enough'
+        ],
+        benefits: [
+          'Builds back and bicep strength',
+          'Improves grip strength',
+          'Essential for athletic development',
+          'Creates V-taper physique'
+        ],
+        tips: [
+          'Use resistance bands for assistance',
+          'Focus on controlled movement',
+          'Train pull-ups 2-3 times weekly'
+        ]
+      }
+    ]
+  },
+  
+  sports: {
+    id: 'sports',
+    name: 'Sports Performance',
+    icon: '⚽',
+    description: 'Enhance athletic performance',
+    color: 'linear-gradient(135deg, #2196F3, #1976D2)',
+    exercises: [
+      {
+        id: 'teen-agility-drills',
+        name: 'Agility Ladder Drills',
+        difficulty: 'Intermediate',
+        duration: '15 minutes',
+        image: '🪜',
+        description: 'Improve foot speed and coordination',
+        instructions: [
+          'One foot in each square',
+          'Two feet in each square',
+          'Icky shuffle: in-in-out pattern',
+          'Lateral high knees',
+          'Hopscotch pattern'
+        ],
+        benefits: [
+          'Improves foot speed',
+          'Enhances coordination',
+          'Better body control',
+          'Essential for all sports'
+        ],
+        tips: [
+          'Start slow, focus on accuracy',
+          'Increase speed gradually',
+          'Keep head up, not looking down'
+        ]
+      },
+      {
+        id: 'teen-plyometrics',
+        name: 'Plyometric Power',
+        difficulty: 'Advanced',
+        duration: '3 sets × 8 reps',
+        image: '⚡',
+        description: 'Explosive exercises for athletic power',
+        instructions: [
+          'Box jumps (start low height)',
+          'Jump squats',
+          'Clapping push-ups',
+          'Broad jumps',
+          'Lateral bounds'
+        ],
+        benefits: [
+          'Builds explosive power',
+          'Improves vertical jump',
+          'Enhances sports performance',
+          'Develops fast-twitch muscles'
+        ],
+        tips: [
+          'Land softly with bent knees',
+          'Warm up thoroughly first',
+          'Quality over quantity'
+        ]
+      }
+    ]
+  }
+};
+
+// Adult Exercises (20-55 years)
+export const adultWorkouts = {
+  strength: {
+    id: 'strength',
+    name: 'Strength Training',
+    icon: '🏋️',
+    description: 'Build muscle and increase strength',
+    color: 'linear-gradient(135deg, #4CAF50, #2E7D32)',
+    exercises: [
+      {
+        id: 'adult-full-body',
+        name: 'Full Body Strength',
+        difficulty: 'Intermediate',
+        duration: '45 minutes',
+        image: '💪',
+        description: 'Complete full-body workout',
+        instructions: [
+          'Barbell squats: 3×8-10',
+          'Bench press: 3×8-10',
+          'Bent-over rows: 3×8-10',
+          'Overhead press: 3×8-10',
+          'Deadlifts: 3×5',
+          'Planks: 3×45 seconds'
+        ],
+        benefits: [
+          'Builds total body strength',
+          'Increases muscle mass',
+          'Improves bone density',
+          'Boosts metabolism'
+        ],
+        tips: [
+          'Focus on proper form',
+          'Progress weight gradually',
+          'Rest 60-90 seconds between sets'
+        ]
+      },
+      {
+        id: 'adult-push-pull',
+        name: 'Push/Pull Split',
+        difficulty: 'Intermediate',
+        duration: '40 minutes',
+        image: '🔄',
+        description: 'Alternate pushing and pulling exercises',
+        instructions: [
+          'Push Day:',
+          '- Dumbbell press: 3×10',
+          '- Incline press: 3×10',
+          '- Lateral raises: 3×12',
+          '- Tricep extensions: 3×12',
+          'Pull Day:',
+          '- Pull-ups: 3×8',
+          '- Cable rows: 3×10',
+          '- Face pulls: 3×15',
+          '- Bicep curls: 3×12'
+        ],
+        benefits: [
+          'Balanced muscle development',
+          'Efficient training split',
+          'Prevents overtraining',
+          'Great for busy schedules'
+        ],
+        tips: [
+          'Train push/pull on alternating days',
+          'Include rest days',
+          'Track your progress'
+        ]
+      }
+    ]
+  },
+  
+  cardio: {
+    id: 'cardio',
+    name: 'Cardio & Conditioning',
+    icon: '🏃',
+    description: 'Improve cardiovascular health',
+    color: 'linear-gradient(135deg, #FF9800, #F57C00)',
+    exercises: [
+      {
+        id: 'adult-hiit',
+        name: 'HIIT Cardio',
+        difficulty: 'Advanced',
+        duration: '20 minutes',
+        image: '⚡',
+        description: 'High-intensity interval training',
+        instructions: [
+          'Warm-up: 3 minutes',
+          '30 seconds sprint/burpees/jumping jacks',
+          '30 seconds rest',
+          'Repeat 15 times',
+          'Cool-down: 2 minutes'
+        ],
+        benefits: [
+          'Maximum calorie burn',
+          'Improves cardiovascular fitness',
+          'Increases metabolism',
+          'Time-efficient'
+        ],
+        tips: [
+          'Go all-out during work intervals',
+          'Use proper form when tired',
+          'Stay hydrated'
+        ]
+      },
+      {
+        id: 'adult-running',
+        name: 'Running Program',
+        difficulty: 'Beginner',
+        duration: '30 minutes',
+        image: '🏃',
+        description: 'Build running endurance',
+        instructions: [
+          'Week 1-2: Run 1 min, walk 2 min × 10',
+          'Week 3-4: Run 2 min, walk 1 min × 10',
+          'Week 5-6: Run 3 min, walk 1 min × 8',
+          'Week 7-8: Run 5 min, walk 1 min × 5',
+          'Week 9-10: Run 20-30 minutes continuous'
+        ],
+        benefits: [
+          'Builds cardiovascular endurance',
+          'Burns calories',
+          'Reduces stress',
+          'Improves mental health'
+        ],
+        tips: [
+          'Invest in good running shoes',
+          'Listen to your body',
+          'Stay consistent'
+        ]
+      }
+    ]
+  }
+};
+
+// Elderly Exercises (55+ years)
+export const elderlyWorkouts = {
+  mobility: {
+    id: 'mobility',
+    name: 'Joint Mobility',
+    icon: '🔄',
+    description: 'Gentle movements to maintain joint health',
+    color: 'linear-gradient(135deg, #2196F3, #1976D2)',
+    exercises: [
+      {
+        id: 'elderly-joint-circles',
+        name: 'Joint Mobility Routine',
+        difficulty: 'Gentle',
+        duration: '15 minutes',
+        image: '🔄',
+        description: 'Gentle joint rotations and movements',
+        instructions: [
+          'Neck rolls: 5 each direction',
+          'Shoulder circles: 10 forward, 10 back',
+          'Arm circles: 10 small, 10 large',
+          'Wrist circles: 10 each direction',
+          'Hip circles: 10 each direction',
+          'Ankle circles: 10 each foot'
+        ],
+        benefits: [
+          'Maintains joint health',
+          'Improves range of motion',
+          'Reduces stiffness',
+          'Prevents injury'
+        ],
+        tips: [
+          'Move slowly and gently',
+          'Stop if you feel pain',
+          'Breathe deeply throughout',
+          'Do daily for best results'
+        ]
+      },
+      {
+        id: 'elderly-seated-stretches',
+        name: 'Seated Stretches',
+        difficulty: 'Gentle',
+        duration: '15 minutes',
+        image: '🪑',
+        description: 'All stretches performed while seated',
+        instructions: [
+          'Neck stretches: gently tilt head side to side',
+          'Shoulder rolls: roll shoulders forward and back',
+          'Seated twist: gently twist torso while seated',
+          'Hamstring stretch: extend leg, reach toward toes',
+          'Ankle pumps: point and flex feet'
+        ],
+        benefits: [
+          'Safe and stable position',
+          'Improves flexibility',
+          'Can be done anywhere',
+          'Gentle on joints'
+        ],
+        tips: [
+          'Use a sturdy chair',
+          'Keep back straight',
+          'Don\'t bounce - hold stretches gently'
+        ]
+      }
+    ]
+  },
+  
+  balance: {
+    id: 'balance',
+    name: 'Balance & Stability',
+    icon: '⚖️',
+    description: 'Exercises to prevent falls and improve stability',
+    color: 'linear-gradient(135deg, #9C27B0, #7B1FA2)',
+    exercises: [
+      {
+        id: 'elderly-balance-drills',
+        name: 'Balance Practice',
+        difficulty: 'Gentle',
+        duration: '10 minutes',
+        image: '⚖️',
+        description: 'Gentle balance exercises with support',
+        instructions: [
+          'Stand near counter or wall for support',
+          'Single leg stand: 10 seconds each leg',
+          'Heel-to-toe walk: 10 steps',
+          'Weight shifts: shift weight side to side',
+          'March in place: 20 steps'
+        ],
+        benefits: [
+          'Prevents falls',
+          'Builds leg strength',
+          'Improves confidence',
+          'Maintains independence'
+        ],
+        tips: [
+          'Always have support nearby',
+          'Progress gradually',
+          'Practice daily'
+        ]
+      },
+      {
+        id: 'elderly-tai-chi',
+        name: 'Gentle Tai Chi',
+        difficulty: 'Gentle',
+        duration: '20 minutes',
+        image: '🧘',
+        description: 'Slow, flowing movements for balance',
+        instructions: [
+          'Commencing form: raise and lower arms',
+          'Part the wild horse\'s mane',
+          'White crane spreads wings',
+          'Brush knee and push',
+          'Cloud hands'
+        ],
+        benefits: [
+          'Improves balance dramatically',
+          'Reduces stress',
+          'Gentle on joints',
+          'Builds leg strength'
+        ],
+        tips: [
+          'Follow along with video',
+          'Focus on slow, controlled movements',
+          'Breathe with movements'
+        ]
+      }
+    ]
+  },
+  
+  strength: {
+    id: 'strength',
+    name: 'Gentle Strength',
+    icon: '💪',
+    description: 'Maintain muscle mass safely',
+    color: 'linear-gradient(135deg, #4CAF50, #388E3C)',
+    exercises: [
+      {
+        id: 'elderly-chair-squats',
+        name: 'Chair Squats',
+        difficulty: 'Gentle',
+        duration: '3 sets × 10 reps',
+        image: '🪑',
+        description: 'Safe squats using a chair',
+        instructions: [
+          'Stand in front of sturdy chair',
+          'Slowly lower as if sitting down',
+          'Lightly touch chair then stand up',
+          'Use arms for balance if needed'
+        ],
+        benefits: [
+          'Builds leg strength',
+          'Improves mobility',
+          'Makes sitting/standing easier',
+          'Maintains independence'
+        ],
+        tips: [
+          'Go at your own pace',
+          'Breathe out when standing',
+          'Keep weight in heels'
+        ]
+      },
+      {
+        id: 'elderly-wall-pushups',
+        name: 'Wall Push-ups',
+        difficulty: 'Gentle',
+        duration: '3 sets × 10 reps',
+        image: '🧱',
+        description: 'Safe upper body strengthening',
+        instructions: [
+          'Stand facing wall, arms length away',
+          'Place hands on wall at shoulder height',
+          'Slowly bend elbows to lean toward wall',
+          'Push back to start'
+        ],
+        benefits: [
+          'Strengthens chest and arms',
+          'Safe for shoulders',
+          'Improves posture',
+          'No floor work needed'
+        ],
+        tips: [
+          'Stand closer for easier',
+          'Farther for more challenge',
+          'Keep back straight'
+        ]
+      }
+    ]
+  },
+  
+  cardio: {
+    id: 'cardio',
+    name: 'Gentle Cardio',
+    icon: '🚶',
+    description: 'Low-impact cardiovascular exercise',
+    color: 'linear-gradient(135deg, #FF9800, #F57C00)',
+    exercises: [
+      {
+        id: 'elderly-walking',
+        name: 'Walking Program',
+        difficulty: 'Gentle',
+        duration: '20-30 minutes',
+        image: '🚶',
+        description: 'Gentle walking for heart health',
+        instructions: [
+          'Start with 5-10 minute walks',
+          'Gradually increase time',
+          'Find flat, safe surfaces',
+          'Wear comfortable shoes',
+          'Walk at conversational pace'
+        ],
+        benefits: [
+          'Improves heart health',
+          'Low impact on joints',
+          'Boosts mood',
+          'Maintains mobility'
+        ],
+        tips: [
+          'Walk with a friend',
+          'Use walking poles for stability',
+          'Listen to music or podcasts',
+          'Stay hydrated'
+        ]
+      },
+      {
+        id: 'elderly-seated-cardio',
+        name: 'Seated Cardio',
+        difficulty: 'Gentle',
+        duration: '15 minutes',
+        image: '🪑',
+        description: 'Cardio exercises while seated',
+        instructions: [
+          'Seated marching: 1 minute',
+          'Arm circles: 30 seconds',
+          'Seated jumping jacks: 1 minute',
+          'Punching arms: 30 seconds',
+          'Leg extensions: 1 minute',
+          'Rest, repeat circuit 3 times'
+        ],
+        benefits: [
+          'Safe for limited mobility',
+          'Gets heart rate up',
+          'Can be done anywhere',
+          'Improves circulation'
+        ],
+        tips: [
+          'Use a stable chair',
+          'Add light hand weights if able',
+          'Keep movements controlled'
+        ]
+      }
+    ]
+  }
+};
+
+// Fitness Category (General fitness enthusiasts)
+export const fitnessWorkouts = {
+  hiit: {
+    id: 'hiit',
+    name: 'HIIT Training',
+    icon: '⚡',
+    description: 'High-intensity interval training for maximum results',
+    color: 'linear-gradient(135deg, #F44336, #D32F2F)',
+    exercises: [
+      {
+        id: 'fitness-hiit-beginner',
+        name: 'Beginner HIIT',
+        difficulty: 'Beginner',
+        duration: '15 minutes',
+        image: '⚡',
+        description: 'Gentle introduction to HIIT',
+        instructions: [
+          '20 seconds work, 40 seconds rest',
+          'Jumping jacks',
+          'High knees (slow pace)',
+          'Bodyweight squats',
+          'Mountain climbers (slow)',
+          'Repeat circuit 5 times'
+        ],
+        benefits: [
+          'Introduces HIIT safely',
+          'Builds cardiovascular fitness',
+          'Burns calories',
+          'Time efficient'
+        ],
+        tips: [
+          'Focus on form, not speed',
+          'Listen to your body',
+          'Progress when ready'
+        ]
+      },
+      {
+        id: 'fitness-hiit-advanced',
+        name: 'Advanced HIIT',
+        difficulty: 'Advanced',
+        duration: '20 minutes',
+        image: '⚡',
+        description: 'Intense HIIT for experienced fitness enthusiasts',
+        instructions: [
+          '40 seconds work, 20 seconds rest',
+          'Burpees',
+          'Jump squats',
+          'Mountain climbers (fast)',
+          'Box jumps',
+          'Battle ropes',
+          'Repeat circuit 4 times'
+        ],
+        benefits: [
+          'Maximum calorie burn',
+          'Improves athletic performance',
+          'Builds endurance',
+          'Time efficient'
+        ],
+        tips: [
+          'Give maximum effort',
+          'Maintain proper form',
+          'Stay hydrated'
+        ]
+      }
+    ]
+  },
+  
+  crossfit: {
+    id: 'crossfit',
+    name: 'Functional Fitness',
+    icon: '🏋️',
+    description: 'CrossFit-style functional workouts',
+    color: 'linear-gradient(135deg, #9C27B0, #7B1FA2)',
+    exercises: [
+      {
+        id: 'fitness-wod',
+        name: 'Workout of the Day (WOD)',
+        difficulty: 'Advanced',
+        duration: '20 minutes',
+        image: '📋',
+        description: 'CrossFit-style functional workout',
+        instructions: [
+          'Complete as many rounds as possible in 20 minutes:',
+          '5 pull-ups',
+          '10 push-ups',
+          '15 squats',
+          '20 sit-ups'
+        ],
+        benefits: [
+          'Full-body workout',
+          'Builds functional strength',
+          'Improves endurance',
+          'Challenges fitness'
+        ],
+        tips: [
+          'Pace yourself',
+          'Scale movements as needed',
+          'Track your rounds'
+        ]
+      }
+    ]
+  }
+};
+
+// Weight Loss Category
+export const weightLossWorkouts = {
+  hiit: {
+    id: 'hiit',
+    name: 'Fat Burning HIIT',
+    icon: '🔥',
+    description: 'High-intensity workouts for maximum calorie burn',
+    color: 'linear-gradient(135deg, #F44336, #D32F2F)',
+    exercises: [
+      {
+        id: 'weightloss-hiit-1',
+        name: '20-Minute Fat Burner',
+        difficulty: 'Intermediate',
+        duration: '20 minutes',
+        image: '🔥',
+        description: 'Intense HIIT for maximum calorie burn',
+        instructions: [
+          'Warm-up: 3 minutes',
+          '30 seconds work, 30 seconds rest',
+          'Burpees',
+          'Mountain climbers',
+          'Jump squats',
+          'High knees',
+          'Repeat circuit 4 times',
+          'Cool-down: 2 minutes'
+        ],
+        benefits: [
+          'Burns up to 300 calories',
+          'Increases metabolism',
+          'Afterburn effect',
+          'Time efficient'
+        ],
+        tips: [
+          'Go all out on work intervals',
+          'Maintain good form',
+          'Track your progress'
+        ]
+      }
+    ]
+  },
+  
+  cardio: {
+    id: 'cardio',
+    name: 'Steady State Cardio',
+    icon: '🏃',
+    description: 'Endurance cardio for fat loss',
+    color: 'linear-gradient(135deg, #FF9800, #F57C00)',
+    exercises: [
+      {
+        id: 'weightloss-cardio',
+        name: 'Fat Burning Cardio',
+        difficulty: 'Beginner',
+        duration: '30-45 minutes',
+        image: '🏃',
+        description: 'Steady-state cardio for fat loss',
+        instructions: [
+          'Choose your activity: running, cycling, swimming',
+          'Maintain steady pace (conversational)',
+          'Keep heart rate in fat-burning zone',
+          'Aim for 30-45 minutes',
+          'Cool down with light stretching'
+        ],
+        benefits: [
+          'Burns fat efficiently',
+          'Improves cardiovascular health',
+          'Sustainable long sessions',
+          'Low stress on body'
+        ],
+        tips: [
+          'Stay in fat-burning zone (60-70% max heart rate)',
+          'Stay hydrated',
+          'Listen to music or podcasts'
+        ]
+      }
+    ]
+  }
+};
+
+// Featured Workouts for Homepage
 export const featuredWorkouts = [
   {
     id: 'featured-1',
@@ -588,5 +957,67 @@ export const featuredWorkouts = [
     duration: '20 min',
     image: '🦵',
     color: 'linear-gradient(135deg, #8E2DE2, #4A00E0)'
+  },
+  {
+    id: 'featured-4',
+    name: 'HIIT Blast',
+    category: 'weightloss',
+    difficulty: 'Advanced',
+    duration: '15 min',
+    image: '⚡',
+    color: 'linear-gradient(135deg, #F44336, #D32F2F)'
+  },
+  {
+    id: 'featured-5',
+    name: 'Full Body Fitness',
+    category: 'fitness',
+    difficulty: 'Intermediate',
+    duration: '20 min',
+    image: '💪',
+    color: 'linear-gradient(135deg, #9C27B0, #7B1FA2)'
   }
 ];
+
+// Function to get workouts based on user category
+export const getWorkoutsByCategory = (userCategory, age) => {
+  switch(userCategory) {
+    case 'kids':
+      return kidsWorkouts;
+    case 'teenage':
+      return teenageWorkouts;
+    case 'adult':
+      return adultWorkouts;
+    case 'elderly':
+      return elderlyWorkouts;
+    case 'fitness':
+      return fitnessWorkouts;
+    case 'weightloss':
+      return weightLossWorkouts;
+    default:
+      // Default to adult if category not found
+      return adultWorkouts;
+  }
+};
+
+// Function to get category display name
+export const getCategoryDisplay = (category) => {
+  const categories = {
+    kids: { name: 'Kids', icon: '🧒', color: '#FF9800' },
+    teenage: { name: 'Teenage', icon: '🧑', color: '#9C27B0' },
+    adult: { name: 'Adult', icon: '👨', color: '#4CAF50' },
+    elderly: { name: 'Elderly', icon: '👴', color: '#2196F3' },
+    fitness: { name: 'Fitness', icon: '💪', color: '#9C27B0' },
+    weightloss: { name: 'Weight Loss', icon: '⚖️', color: '#F44336' }
+  };
+  return categories[category] || categories.adult;
+};
+
+// Export all workout categories as a combined object
+export const workoutCategories = {
+  kids: kidsWorkouts,
+  teenage: teenageWorkouts,
+  adult: adultWorkouts,
+  elderly: elderlyWorkouts,
+  fitness: fitnessWorkouts,
+  weightloss: weightLossWorkouts
+};

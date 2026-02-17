@@ -1,0 +1,623 @@
+/* DailyWorkoutPage.css */
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: white;
+  color: #666;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 30px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.3s;
+}
+
+.back-btn:hover {
+  transform: translateX(-5px);
+  color: #4CAF50;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Header */
+.daily-header {
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.header-icon {
+  font-size: 4rem;
+  background: rgba(255,255,255,0.2);
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-text h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.header-meta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.header-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255,255,255,0.2);
+  padding: 0.3rem 1rem;
+  border-radius: 30px;
+  font-size: 0.9rem;
+}
+
+/* Preview Card */
+.workout-preview {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.preview-card {
+  background: white;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.preview-card h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.focus-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.focus-tag {
+  padding: 0.3rem 1rem;
+  border-radius: 30px;
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.workout-structure {
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.workout-structure h4 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.structure-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.structure-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.structure-icon {
+  font-size: 1.5rem;
+  background: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.structure-item div {
+  display: flex;
+  flex-direction: column;
+}
+
+.structure-label {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.structure-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.preview-exercises {
+  margin-bottom: 2rem;
+}
+
+.preview-exercises h4 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.preview-list {
+  background: #f8f9fa;
+  border-radius: 16px;
+  padding: 1rem;
+}
+
+.preview-ex-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.preview-ex-item:last-child {
+  border-bottom: none;
+}
+
+.preview-ex-icon {
+  font-size: 1.3rem;
+  width: 30px;
+  text-align: center;
+}
+
+.preview-ex-name {
+  flex: 1;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.preview-ex-reps {
+  color: #4CAF50;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.preview-more {
+  text-align: center;
+  padding: 0.5rem;
+  color: #999;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.preview-benefits {
+  margin-bottom: 2rem;
+}
+
+.preview-benefits h4 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.benefits-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #f8f9fa;
+  padding: 0.3rem 1rem;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.benefit-check {
+  color: #4CAF50;
+  font-size: 0.9rem;
+}
+
+.start-workout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem;
+  border: none;
+  border-radius: 16px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.start-workout-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Active Workout */
+.active-workout {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.workout-progress {
+  margin-bottom: 2rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  display: block;
+  text-align: right;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.current-exercise-card {
+  background: white;
+  border-radius: 24px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  border-left: 4px solid;
+  position: relative;
+}
+
+.exercise-type-badge {
+  position: absolute;
+  top: -12px;
+  left: 2rem;
+  padding: 0.3rem 1.2rem;
+  border-radius: 30px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.exercise-main {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.exercise-icon-large {
+  font-size: 4rem;
+  background: #f8f9fa;
+  width: 100px;
+  height: 100px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exercise-info h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.exercise-reps {
+  font-size: 1.2rem;
+  color: #4CAF50;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.exercise-muscles {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.exercise-timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.timer-icon {
+  color: #4CAF50;
+  font-size: 1.5rem;
+}
+
+.timer-display {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.exercise-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.complete-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: none;
+  border-radius: 16px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.complete-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.skip-btn {
+  padding: 1rem 2rem;
+  border: 2px solid #999;
+  background: transparent;
+  color: #666;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.skip-btn:hover {
+  border-color: #4CAF50;
+  color: #4CAF50;
+}
+
+.upcoming-preview {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.upcoming-preview h4 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.upcoming-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.upcoming-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.upcoming-icon {
+  font-size: 1.2rem;
+  width: 30px;
+  text-align: center;
+}
+
+.upcoming-name {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .header-meta {
+    justify-content: center;
+  }
+
+  .structure-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .exercise-main {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .exercise-actions {
+    flex-direction: column;
+  }
+
+  .exercise-timer {
+    padding: 1rem;
+  }
+
+  .timer-display {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .daily-header {
+    padding: 1.5rem;
+  }
+
+  .header-icon {
+    font-size: 3rem;
+    width: 60px;
+    height: 60px;
+  }
+
+  .header-text h1 {
+    font-size: 1.5rem;
+  }
+
+  .header-meta {
+    gap: 0.5rem;
+  }
+
+  .header-meta span {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.8rem;
+  }
+
+  .preview-card {
+    padding: 1.5rem;
+  }
+
+  .current-exercise-card {
+    padding: 1.5rem;
+  }
+
+  .exercise-icon-large {
+    font-size: 3rem;
+    width: 80px;
+    height: 80px;
+  }
+
+  .exercise-info h2 {
+    font-size: 1.4rem;
+  }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .back-btn {
+    background: #2d2d2d;
+    color: #aaa;
+  }
+
+  .back-btn:hover {
+    color: #4CAF50;
+  }
+
+  .preview-card,
+  .current-exercise-card,
+  .upcoming-preview {
+    background: #2d2d2d;
+  }
+
+  .preview-card h3,
+  .current-exercise-card h2,
+  .upcoming-preview h4 {
+    color: #e0e0e0;
+  }
+
+  .workout-structure {
+    background: #3d3d3d;
+  }
+
+  .workout-structure h4 {
+    color: #e0e0e0;
+  }
+
+  .structure-icon {
+    background: #4d4d4d;
+  }
+
+  .structure-label {
+    color: #aaa;
+  }
+
+  .structure-value {
+    color: #e0e0e0;
+  }
+
+  .preview-list {
+    background: #3d3d3d;
+  }
+
+  .preview-ex-item {
+    border-bottom-color: #4d4d4d;
+  }
+
+  .preview-ex-name {
+    color: #e0e0e0;
+  }
+
+  .benefit-item {
+    background: #3d3d3d;
+    color: #aaa;
+  }
+
+  .exercise-icon-large {
+    background: #3d3d3d;
+  }
+
+  .exercise-info h2 {
+    color: #e0e0e0;
+  }
+
+  .exercise-muscles {
+    color: #aaa;
+  }
+
+  .exercise-timer {
+    background: #3d3d3d;
+  }
+
+  .timer-display {
+    color: #e0e0e0;
+  }
+
+  .upcoming-item {
+    background: #3d3d3d;
+  }
+
+  .upcoming-name {
+    color: #aaa;
+  }
+}
