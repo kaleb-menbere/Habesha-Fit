@@ -674,3 +674,52 @@
     display: none;
   }
 }
+/* Add to the Navigation section in Header.css */
+
+/* Terms Link Specific Styling */
+.terms-link {
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--green-light);
+  padding-top: 1rem;
+}
+
+.terms-link:hover {
+  background: var(--green-light);
+  color: var(--green-primary);
+}
+
+.terms-link.active {
+  background: var(--green-primary);
+  color: white;
+}
+
+.terms-link svg {
+  color: inherit;
+}
+
+/* Optional: Add a subtle separator */
+.h-side-nav {
+  position: relative;
+}
+
+.h-side-nav::after {
+  content: '';
+  position: absolute;
+  bottom: 70px; /* Adjust based on your Terms link position */
+  left: 1rem;
+  right: 1rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green-light), transparent);
+  pointer-events: none;
+}
+
+/* Adjust for dark mode */
+@media (prefers-color-scheme: dark) {
+  .terms-link {
+    border-top-color: #2e7d32;
+  }
+  
+  .h-side-nav::after {
+    background: linear-gradient(90deg, transparent, #2e7d32, transparent);
+  }
+}

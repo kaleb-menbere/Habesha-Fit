@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   FiMenu, FiX, FiHome, FiTarget, FiTrendingUp, 
   FiHeart, FiBookOpen, FiSettings, FiLogOut, FiUser,
-  FiAward, FiCalendar, FiClock
+  FiAward, FiCalendar, FiClock, FiFileText
 } from 'react-icons/fi';
 import { BiDumbbell } from 'react-icons/bi';
 import useAuthStore from '../../store/authStore';
@@ -14,12 +14,12 @@ export default function Header({
   category,
   menuOpen,
   onMenuToggle,
-  // Remove onLogout from props - we'll get it directly from store
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const logout = useAuthStore((state) => state.logout); // Get logout directly from store
+  const logout = useAuthStore((state) => state.logout);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [showTerms, setShowTerms] = useState(false);
 
   // Update active tab based on current path
   useEffect(() => {
@@ -31,7 +31,8 @@ export default function Header({
     else if (path === '/health') setActiveTab('health');
     else if (path === '/guides') setActiveTab('guides');
     else if (path === '/settings') setActiveTab('settings');
-    else if (path === '/daily-workout') setActiveTab('dashboard'); // Keep dashboard active for daily workout
+    else if (path === '/daily-workout') setActiveTab('dashboard');
+    else if (path === '/terms') setActiveTab(''); // Terms doesn't highlight any tab
   }, [location]);
 
   const navItems = [
@@ -93,12 +94,14 @@ export default function Header({
 
   const handleLogout = () => {
     console.log('Logout clicked - calling logout function');
-    // Call logout from store
     logout();
-    // Close menu
     onMenuToggle(false);
-    // Navigate to login
     navigate('/login');
+  };
+
+  const handleTermsClick = () => {
+    navigate('/terms');
+    onMenuToggle(false);
   };
 
   return (
@@ -190,6 +193,19 @@ export default function Header({
               )}
             </button>
           ))}
+          
+          {/* Terms & Conditions Link */}
+          <button
+            className={`h-nav-item terms-link ${location.pathname === '/terms' ? 'active' : ''}`}
+            onClick={handleTermsClick}
+            style={location.pathname === '/terms' ? { 
+              background: currentColor.primary,
+              color: 'white'
+            } : {}}
+          >
+            <FiFileText />
+            <span>Terms & Conditions</span>
+          </button>
         </nav>
 
         <div className="h-side-footer">

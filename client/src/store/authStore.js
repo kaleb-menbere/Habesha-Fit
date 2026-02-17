@@ -8,10 +8,10 @@ const API_URL = 'http://localhost:5000/api';
 
 // Mock users for testing
 const MOCK_USERS = {
-  '976957649': { // Existing user
+  '912345678': { // Existing user
     _id: '1',
-    firstName: 'John',
-    lastName: 'Doe',
+    firstName: 'Kaleb',
+    lastName: 'Menbere',
     phone: '976957649',
     fitnessLevel: 'beginner',
     age: 28,
@@ -23,9 +23,9 @@ const MOCK_USERS = {
     hasProfile: true,
     profileCompleted: true
   },
-  '976957648': { // New user
+  '912345677': { // New user
     _id: '2',
-    phone: '976957648',
+    phone: '912345677',
     hasProfile: false,
     profileCompleted: false
   }

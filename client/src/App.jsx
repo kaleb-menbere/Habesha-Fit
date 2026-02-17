@@ -14,6 +14,7 @@ import GuidesPage from './pages/GuidesPage';
 import SettingsPage from './pages/SettingsPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import DailyWorkoutPage from './pages/DailyWorkoutPage';
+import Terms from './pages/Terms';
 
 function App() {
   const { user, profileCompleted } = useAuthStore();
@@ -50,6 +51,7 @@ function App() {
             <UserOnboarding />
           </ProtectedRoute>
         } />
+        <Route path="/terms" element={<Terms />} />
         <Route path="/daily-workout" element={
           <ProtectedRoute>
             {!profileCompleted ? <Navigate to="/onboarding" /> : <DailyWorkoutPage />}
