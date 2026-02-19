@@ -1,13 +1,13 @@
-// controllers/adminController.js
 const User = require("../models/User");
-const bcrypt = require("bcryptjs");
+const { Op } = require("sequelize");
+const { sequelize } = require("../config/database");
 
-// @desc    Create a new user (Admin only)
+// @desc    Create a new user
 // @route   POST /api/admin/users
 // @access  Private/Admin
 exports.createUser = async (req, res) => {
   try {
-    console.log("📝 Create user - Body:", req.body);
+    console.log("📝 Admin: Creating new user - Body:", req.body);
     
     const { 
       phone, 
@@ -17,14 +17,15 @@ exports.createUser = async (req, res) => {
       gender, 
       subscriptionType,
       status = 'Active',
-      productNumber 
+      productNumber,
+      point = 0
     } = req.body;
 
     // Validate required fields
     if (!phone || !fullName) {
       return res.status(400).json({ 
         success: false,
-        message: "Phone and full name are required" 
+        message: "Phone number and full name are required" 
       });
     }
 
@@ -62,8 +63,8 @@ exports.createUser = async (req, res) => {
       status,
       subscriptionType: subscriptionType || 'Trial',
       productNumber: productNumber || null,
-      registrationDate: new Date(),
-      point: 0
+      point: point,
+      registrationDate: new Date()
     });
 
     console.log("✅ User created successfully:", user.id);
@@ -76,8 +77,12 @@ exports.createUser = async (req, res) => {
         phone: user.phone,
         fullName: user.fullName,
         email: user.email,
+        age: user.age,
+        gender: user.gender,
         status: user.status,
         subscriptionType: user.subscriptionType,
+        productNumber: user.productNumber,
+        point: user.point,
         registrationDate: user.registrationDate
       }
     });
@@ -91,21 +96,80 @@ exports.createUser = async (req, res) => {
   }
 };
 
-// @desc    Get all users (Admin only)
+// @desc    Get all users with optional filters
 // @route   GET /api/admin/users
 // @access  Private/Admin
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll({
-      attributes: { exclude: ['lastOtp', 'otpSentTime', 'password'] },
-      order: [['createdAt', 'DESC']]
+    console.log("📋 Admin: Fetching all users - Query:", req.query);
+    
+    const { 
+      page = 1, 
+      limit = 10, 
+      search, 
+      status, 
+      subscriptionType,
+      sortBy = 'createdAt',
+      sortOrder = 'DESC'
+    } = req.query;
+
+    // Build where clause for filtering
+    const where = {};
+    
+    if (status) {
+      where.status = status;
+    }
+    
+    if (subscriptionType) {
+      where.subscriptionType = subscriptionType;
+    }
+    
+    if (search) {
+      where[Op.or] = [
+        { phone: { [Op.like]: `%${search}%` } },
+        { fullName: { [Op.like]: `%${search}%` } },
+        { email: { [Op.like]: `%${search}%` } }
+      ];
+    }
+
+    // Calculate pagination
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+    
+    // Get users with pagination
+    const { count, rows: users } = await User.findAndCountAll({
+      where,
+      attributes: { 
+        exclude: ['password', 'lastOtp', 'otpSentTime', 'otpMethod'] 
+      },
+      limit: parseInt(limit),
+      offset: offset,
+      order: [[sortBy, sortOrder]]
     });
+
+    console.log(`✅ Found ${count} users total, returning ${users.length}`);
 
     res.json({
       success: true,
-      count: users.length,
-      users
+      count,
+      totalPages: Math.ceil(count / limit),
+      currentPage: parseInt(page),
+      users: users.map(user => ({
+        id: user.id,
+        phone: user.phone,
+        fullName: user.fullName,
+        email: user.email,
+        age: user.age,
+        gender: user.gender,
+        status: user.status,
+        subscriptionType: user.subscriptionType,
+        productNumber: user.productNumber,
+        point: user.point,
+        registrationDate: user.registrationDate,
+        nextRenewalTime: user.nextRenewalTime,
+        lastLoginAt: user.lastLoginAt
+      }))
     });
+
   } catch (error) {
     console.error("❌ Error fetching users:", error);
     res.status(500).json({ 
@@ -115,17 +179,19 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// @desc    Get user by phone (Admin only)
-// @route   GET /api/admin/users/:phone
+// @desc    Get single user by ID
+// @route   GET /api/admin/users/:id
 // @access  Private/Admin
-exports.getUserByPhone = async (req, res) => {
+exports.getUserById = async (req, res) => {
   try {
-    const { phone } = req.params;
-    const cleanPhone = phone.replace(/\D/g, '');
+    const { id } = req.params;
+    
+    console.log("🔍 Admin: Fetching user by ID:", id);
 
-    const user = await User.findOne({ 
-      where: { phone: cleanPhone },
-      attributes: { exclude: ['lastOtp', 'otpSentTime', 'password'] }
+    const user = await User.findByPk(id, {
+      attributes: { 
+        exclude: ['password', 'lastOtp', 'otpSentTime', 'otpMethod'] 
+      }
     });
 
     if (!user) {
@@ -139,6 +205,7 @@ exports.getUserByPhone = async (req, res) => {
       success: true,
       user
     });
+
   } catch (error) {
     console.error("❌ Error fetching user:", error);
     res.status(500).json({ 
@@ -148,13 +215,54 @@ exports.getUserByPhone = async (req, res) => {
   }
 };
 
-// @desc    Update user (Admin only)
+// @desc    Get user by phone number
+// @route   GET /api/admin/users/phone/:phone
+// @access  Private/Admin
+exports.getUserByPhone = async (req, res) => {
+  try {
+    const { phone } = req.params;
+    const cleanPhone = phone.replace(/\D/g, '');
+    
+    console.log("🔍 Admin: Fetching user by phone:", cleanPhone);
+
+    const user = await User.findOne({ 
+      where: { phone: cleanPhone },
+      attributes: { 
+        exclude: ['password', 'lastOtp', 'otpSentTime', 'otpMethod'] 
+      }
+    });
+
+    if (!user) {
+      return res.status(404).json({ 
+        success: false,
+        message: "User not found" 
+      });
+    }
+
+    res.json({
+      success: true,
+      user
+    });
+
+  } catch (error) {
+    console.error("❌ Error fetching user:", error);
+    res.status(500).json({ 
+      success: false,
+      message: "Server error" 
+    });
+  }
+};
+
+// @desc    Update user
 // @route   PUT /api/admin/users/:id
 // @access  Private/Admin
 exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
+    
+    console.log("📝 Admin: Updating user:", id);
+    console.log("📝 Update data:", updates);
 
     const user = await User.findByPk(id);
 
@@ -167,11 +275,38 @@ exports.updateUser = async (req, res) => {
 
     // Remove fields that shouldn't be updated directly
     delete updates.id;
+    delete updates.password;
     delete updates.lastOtp;
     delete updates.otpSentTime;
-    delete updates.password;
+    delete updates.otpMethod;
+    delete updates.createdAt;
+    delete updates.registrationDate;
+
+    // Handle phone number if provided
+    if (updates.phone) {
+      updates.phone = updates.phone.replace(/\D/g, '');
+      
+      // Check if phone number is already taken by another user
+      if (updates.phone !== user.phone) {
+        const existingUser = await User.findOne({ 
+          where: { 
+            phone: updates.phone,
+            id: { [Op.ne]: id }
+          } 
+        });
+        
+        if (existingUser) {
+          return res.status(400).json({ 
+            success: false,
+            message: "Phone number already in use by another user" 
+          });
+        }
+      }
+    }
 
     await user.update(updates);
+
+    console.log("✅ User updated successfully");
 
     res.json({
       success: true,
@@ -181,10 +316,15 @@ exports.updateUser = async (req, res) => {
         phone: user.phone,
         fullName: user.fullName,
         email: user.email,
+        age: user.age,
+        gender: user.gender,
         status: user.status,
-        subscriptionType: user.subscriptionType
+        subscriptionType: user.subscriptionType,
+        productNumber: user.productNumber,
+        point: user.point
       }
     });
+
   } catch (error) {
     console.error("❌ Error updating user:", error);
     res.status(500).json({ 
@@ -194,12 +334,14 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-// @desc    Delete user (Admin only)
+// @desc    Delete user
 // @route   DELETE /api/admin/users/:id
 // @access  Private/Admin
 exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
+    
+    console.log("🗑️ Admin: Deleting user:", id);
 
     const user = await User.findByPk(id);
 
@@ -210,12 +352,23 @@ exports.deleteUser = async (req, res) => {
       });
     }
 
+    // Don't allow deleting yourself
+    if (user.id === req.user.id) {
+      return res.status(400).json({ 
+        success: false,
+        message: "You cannot delete your own account" 
+      });
+    }
+
     await user.destroy();
+
+    console.log("✅ User deleted successfully");
 
     res.json({
       success: true,
       message: "User deleted successfully"
     });
+
   } catch (error) {
     console.error("❌ Error deleting user:", error);
     res.status(500).json({ 
@@ -224,3 +377,118 @@ exports.deleteUser = async (req, res) => {
     });
   }
 };
+
+// @desc    Bulk create users
+// @route   POST /api/admin/users/bulk
+// @access  Private/Admin
+exports.bulkCreateUsers = async (req, res) => {
+  try {
+    const { users } = req.body;
+    
+    console.log("📦 Admin: Bulk creating users - Count:", users?.length);
+
+    if (!users || !Array.isArray(users) || users.length === 0) {
+      return res.status(400).json({ 
+        success: false,
+        message: "Please provide an array of users" 
+      });
+    }
+
+    const results = {
+      successful: [],
+      failed: []
+    };
+
+    for (const userData of users) {
+      try {
+        // Clean phone number
+        const cleanPhone = userData.phone?.replace(/\D/g, '');
+        
+        if (!cleanPhone || cleanPhone.length !== 9) {
+          results.failed.push({
+            ...userData,
+            error: "Invalid phone number"
+          });
+          continue;
+        }
+
+        // Check if user exists
+        const existing = await User.findOne({ 
+          where: { phone: cleanPhone } 
+        });
+
+        if (existing) {
+          results.failed.push({
+            ...userData,
+            error: "User already exists"
+          });
+          continue;
+        }
+
+        // Create user
+        const user = await User.create({
+          phone: cleanPhone,
+          fullName: userData.fullName,
+          email: userData.email || null,
+          age: userData.age || null,
+          gender: userData.gender || null,
+          status: userData.status || 'Active',
+          subscriptionType: userData.subscriptionType || 'Trial',
+          productNumber: userData.productNumber || null,
+          point: userData.point || 0,
+          registrationDate: new Date()
+        });
+
+        results.successful.push({
+          id: user.id,
+          phone: user.phone,
+          fullName: user.fullName
+        });
+
+      } catch (error) {
+        results.failed.push({
+          ...userData,
+          error: error.message
+        });
+      }
+    }
+
+    console.log(`✅ Bulk create complete: ${results.successful.length} success, ${results.failed.length} failed`);
+
+    res.status(201).json({
+      success: true,
+      message: `Created ${results.successful.length} users, ${results.failed.length} failed`,
+      results
+    });
+
+  } catch (error) {
+    console.error("❌ Error in bulk create:", error);
+    res.status(500).json({ 
+      success: false,
+      message: "Server error" 
+    });
+  }
+};
+
+const express = require("express");
+const router = express.Router();
+const adminController = require("../controllers/adminController");
+const { protect, adminOnly } = require("../middleware/auth");
+
+// All admin routes require authentication and admin privileges
+router.use(protect);
+router.use(adminOnly);
+
+// User management routes
+router.post("/users", adminController.createUser);
+router.get("/users", adminController.getAllUsers);
+router.get("/users/stats/summary", adminController.getUserStats); // Make sure this line exists
+router.get("/users/:id", adminController.getUserById);
+router.get("/users/phone/:phone", adminController.getUserByPhone);
+router.put("/users/:id", adminController.updateUser);
+router.delete("/users/:id", adminController.deleteUser);
+
+// Bulk operations
+router.post("/users/bulk", adminController.bulkCreateUsers);
+
+module.exports = router;

@@ -7,9 +7,6 @@ const generateOTP = () => {
   return Math.floor(1000 + Math.random() * 9000).toString();
 };
 
-// @desc    Request OTP
-// @route   POST /api/auth/request-otp
-// @access  Public
 // controllers/authController.js
 
 // @desc    Request OTP - ONLY for existing users
@@ -227,6 +224,87 @@ exports.verifyOtp = async (req, res) => {
       success: false,
       message: "Server error. Please try again.",
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+};
+
+
+// @desc    Get current user profile
+// @route   GET /api/auth/me
+// @access  Private
+exports.getMe = async (req, res) => {
+  try {
+    console.log("👤 Getting profile for user:", req.user.id);
+    
+    // req.user is attached by protect middleware
+    const user = req.user;
+    
+    res.json({
+      success: true,
+      user: {
+        id: user.id,
+        phone: user.phone,
+        fullName: user.fullName,
+        email: user.email,
+        age: user.age,
+        gender: user.gender,
+        status: user.status,
+        subscriptionType: user.subscriptionType,
+        point: user.point,
+        registrationDate: user.registrationDate,
+        nextRenewalTime: user.nextRenewalTime,
+        productNumber: user.productNumber
+      }
+    });
+  } catch (error) {
+    console.error("❌ Error in getMe:", error);
+    res.status(500).json({ 
+      success: false,
+      message: "Server error" 
+    });
+  }
+};
+
+// @desc    Check subscription status
+// @route   GET /api/auth/subscription-status
+// @access  Private
+exports.checkSubscription = async (req, res) => {
+  try {
+    const user = req.user;
+    
+    const isActive = user.status === 'Active' && 
+      (!user.nextRenewalTime || new Date(user.nextRenewalTime) > new Date());
+
+    // Calculate days remaining until renewal
+    let daysRemaining = null;
+    if (user.nextRenewalTime) {
+      const now = new Date();
+      const renewal = new Date(user.nextRenewalTime);
+      daysRemaining = Math.ceil((renewal - now) / (1000 * 60 * 60 * 24));
+    }
+
+    // Check if trial is expiring soon
+    const isTrial = user.subscriptionType?.toLowerCase() === 'trial';
+    const trialEndingSoon = isTrial && daysRemaining !== null && daysRemaining <= 3 && daysRemaining > 0;
+
+    res.json({
+      success: true,
+      subscription: {
+        type: user.subscriptionType || 'None',
+        status: user.status,
+        nextRenewal: user.nextRenewalTime,
+        isActive,
+        daysRemaining,
+        isTrial,
+        trialEndingSoon,
+        points: user.point || 0
+      }
+    });
+  } catch (error) {
+    console.error("❌ Error in checkSubscription:", error);
+    res.status(500).json({ 
+      success: false,
+      message: "Server error" 
     });
   }
 };
