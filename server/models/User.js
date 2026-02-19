@@ -1,54 +1,143 @@
-import mongoose from 'mongoose';
-import bcrypt from 'bcryptjs';
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/database');
+const bcrypt = require('bcryptjs');
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'Name is required'],
-    trim: true
+const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+    primaryKey: true
   },
-  email: {
-    type: String,
-    required: [true, 'Email is required'],
+  
+  // Add phone field - THIS IS MISSING!
+  phone: {
+    type: DataTypes.STRING,
+    allowNull: false,
     unique: true,
-    lowercase: true,
-    trim: true,
-    match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email']
+    validate: {
+      len: [9, 9],
+      is: /^[0-9]+$/
+    }
+  },
+  
+  // Authentication fields
+  email: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    unique: true,
+    validate: {
+      isEmail: true
+    }
   },
   password: {
-    type: String,
-    required: [true, 'Password is required'],
-    minlength: [6, 'Password must be at least 6 characters']
+    type: DataTypes.STRING,
+    allowNull: true
   },
-  profile: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Profile'
+  
+  // Personal Information
+  fullName: {
+    type: DataTypes.STRING,
+    field: 'first_and_last_name',
+    allowNull: true
   },
+  age: {
+    type: DataTypes.INTEGER
+  },
+  gender: {
+    type: DataTypes.STRING
+  },
+  
+  // Registration Information
+  registrationDate: {
+    type: DataTypes.DATE,
+    field: 'registration_date',
+    defaultValue: DataTypes.NOW
+  },
+  status: {
+    type: DataTypes.ENUM('Active', 'Inactive', 'Suspended', 'Expired'),
+    defaultValue: 'Active'
+  },
+  
+  // Subscription Information
+  subscriptionType: {
+    type: DataTypes.STRING,
+    field: 'subscription_type'
+  },
+  nextRenewalTime: {
+    type: DataTypes.DATE,
+    field: 'next_renewal_time'
+  },
+  deactivationDate: {
+    type: DataTypes.DATE,
+    field: 'deactivation_date'
+  },
+  
+  // OTP Information
+  lastOtp: {
+    type: DataTypes.STRING,
+    field: 'last_otp'
+  },
+  otpSentTime: {
+    type: DataTypes.DATE,
+    field: 'otp_sent_time'
+  },
+  otpMethod: {
+    type: DataTypes.STRING,
+    field: 'otp_method'
+  },
+  
+  // Product & Points
+  productNumber: {
+    type: DataTypes.STRING,
+    field: 'product_number'
+  },
+  point: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  lastPointAdded: {
+    type: DataTypes.DATE,
+    field: 'last_point_added'
+  },
+  
+  // Login tracking
+  lastLoginAt: {
+    type: DataTypes.DATE,
+    field: 'last_login_at'
+  },
+  
+  // Timestamps
   createdAt: {
-    type: Date,
-    default: Date.now
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+    field: 'created_at'
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+    field: 'updated_at'
   }
 }, {
-  timestamps: true
-});
-
-// Hash password before saving
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (error) {
-    next(error);
+  tableName: 'users',
+  hooks: {
+    beforeCreate: async (user) => {
+      if (user.password && !user.password.startsWith('$2a$')) {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
+      }
+    },
+    beforeUpdate: async (user) => {
+      if (user.changed('password')) {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
+      }
+    }
   }
 });
 
-// Compare password method
-userSchema.methods.comparePassword = async function(candidatePassword) {
+// Instance method to check password
+User.prototype.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
-const User = mongoose.model('User', userSchema);
-export default User;
+module.exports = User;

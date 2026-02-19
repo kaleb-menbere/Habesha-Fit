@@ -14,7 +14,7 @@ const MOCK_USERS = {
     lastName: 'Menbere',
     phone: '976957649',
     fitnessLevel: 'beginner',
-    age: 28,
+    age: 22,
     gender: 'male',
     height: 175,
     weight: 70,
