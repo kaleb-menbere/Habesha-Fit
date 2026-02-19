@@ -26,17 +26,36 @@ export default function Dashboard() {
   }, [timeRange]);
 
   const fetchDashboardData = async () => {
+    setLoading(true);
+    setError('');
+    
     try {
+      console.log("Fetching dashboard data...");
+      
       const [statsRes, usersRes] = await Promise.all([
-        users.getStats(),
-        users.getAll({ limit: 5, sortBy: 'createdAt', sortOrder: 'DESC' })
+        users.getStats().catch(err => {
+          console.error("Stats error:", err);
+          return { data: { stats: {
+            totalUsers: 0,
+            activeUsers: 0,
+            inactiveUsers: 0,
+            suspendedUsers: 0,
+            recentUsers: 0,
+            subscriptionBreakdown: {}
+          }}};
+        }),
+        users.getAll({ limit: 5, sortBy: 'createdAt', sortOrder: 'DESC' }).catch(err => {
+          console.error("Users error:", err);
+          return { data: { users: [] }};
+        })
       ]);
 
+      console.log("Stats received:", statsRes.data);
       setStats(statsRes.data.stats);
-      setRecentUsers(usersRes.data.users);
+      setRecentUsers(usersRes.data.users || []);
     } catch (err) {
+      console.error('Failed to load dashboard data:', err);
       setError('Failed to load dashboard data');
-      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -45,10 +64,20 @@ export default function Dashboard() {
   if (loading) return <div className="dashboard-loading">Loading dashboard...</div>;
   if (error) return <div className="dashboard-error">{error}</div>;
 
+  // Ensure stats exists with defaults
+  const safeStats = stats || {
+    totalUsers: 0,
+    activeUsers: 0,
+    inactiveUsers: 0,
+    suspendedUsers: 0,
+    recentUsers: 0,
+    subscriptionBreakdown: {}
+  };
+
   const statCards = [
     {
       title: 'Total Users',
-      value: stats?.totalUsers || 0,
+      value: safeStats.totalUsers || 0,
       icon: <FiUsers />,
       color: '#667eea',
       bgColor: '#e8ecff',
@@ -57,7 +86,7 @@ export default function Dashboard() {
     },
     {
       title: 'Active Users',
-      value: stats?.activeUsers || 0,
+      value: safeStats.activeUsers || 0,
       icon: <FiUserCheck />,
       color: '#48bb78',
       bgColor: '#e3f9e5',
@@ -66,7 +95,7 @@ export default function Dashboard() {
     },
     {
       title: 'Inactive Users',
-      value: stats?.inactiveUsers || 0,
+      value: safeStats.inactiveUsers || 0,
       icon: <FiUserX />,
       color: '#f56565',
       bgColor: '#ffe5e5',
@@ -75,7 +104,7 @@ export default function Dashboard() {
     },
     {
       title: 'New Users (30d)',
-      value: stats?.recentUsers || 0,
+      value: safeStats.recentUsers || 0,
       icon: <FiTrendingUp />,
       color: '#ed8936',
       bgColor: '#fff3e0',
@@ -163,8 +192,8 @@ export default function Dashboard() {
                     </td>
                     <td>{user.phone}</td>
                     <td>
-                      <span className={`sub-badge ${user.subscriptionType?.toLowerCase()}`}>
-                        {user.subscriptionType || 'None'}
+                      <span className={`sub-badge ${user.subscriptionType?.toLowerCase() || user.subscription_type?.toLowerCase() || 'none'}`}>
+                        {user.subscriptionType || user.subscription_type || 'None'}
                       </span>
                     </td>
                     <td>
@@ -172,7 +201,7 @@ export default function Dashboard() {
                         {user.status}
                       </span>
                     </td>
-                    <td>{new Date(user.registrationDate).toLocaleDateString()}</td>
+                    <td>{new Date(user.registrationDate || user.registration_date).toLocaleDateString()}</td>
                   </tr>
                 ))}
               </tbody>
@@ -182,10 +211,12 @@ export default function Dashboard() {
 
         <div className="dashboard-card subscription-stats">
           <h2>Subscription Distribution</h2>
-          {stats?.subscriptionBreakdown && (
+          {safeStats.subscriptionBreakdown && Object.keys(safeStats.subscriptionBreakdown).length > 0 ? (
             <div className="subscription-list">
-              {Object.entries(stats.subscriptionBreakdown).map(([type, count]) => {
-                const percentage = ((count / stats.totalUsers) * 100).toFixed(1);
+              {Object.entries(safeStats.subscriptionBreakdown).map(([type, count]) => {
+                const percentage = safeStats.totalUsers > 0 
+                  ? ((count / safeStats.totalUsers) * 100).toFixed(1) 
+                  : '0';
                 return (
                   <div key={type} className="subscription-item">
                     <div className="sub-info">
@@ -199,7 +230,8 @@ export default function Dashboard() {
                           width: `${percentage}%`,
                           background: type === 'Monthly' ? '#48bb78' : 
                                      type === 'Yearly' ? '#667eea' : 
-                                     type === 'Trial' ? '#ed8936' : '#a0aec0'
+                                     type === 'Trial' ? '#ed8936' : 
+                                     type === 'Admin' ? '#9f7aea' : '#a0aec0'
                         }}
                       ></div>
                     </div>
@@ -208,6 +240,8 @@ export default function Dashboard() {
                 );
               })}
             </div>
+          ) : (
+            <div className="no-data">No subscription data available</div>
           )}
         </div>
 

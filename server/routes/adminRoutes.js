@@ -10,7 +10,7 @@ router.use(adminOnly);
 // User management routes
 router.post("/users", adminController.createUser);
 router.get("/users", adminController.getAllUsers);
-router.get("/users/stats/summary", adminController.getUserStats); // Make sure this line exists
+router.get("/users/stats/summary", adminController.getUserStats);
 router.get("/users/:id", adminController.getUserById);
 router.get("/users/phone/:phone", adminController.getUserByPhone);
 router.put("/users/:id", adminController.updateUser);

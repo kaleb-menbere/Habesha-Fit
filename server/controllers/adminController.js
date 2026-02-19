@@ -470,25 +470,58 @@ exports.bulkCreateUsers = async (req, res) => {
   }
 };
 
-const express = require("express");
-const router = express.Router();
-const adminController = require("../controllers/adminController");
-const { protect, adminOnly } = require("../middleware/auth");
+// @desc    Get user statistics
+// @route   GET /api/admin/users/stats/summary
+// @access  Private/Admin
+exports.getUserStats = async (req, res) => {
+  try {
+    console.log("📊 Admin: Fetching user statistics");
 
-// All admin routes require authentication and admin privileges
-router.use(protect);
-router.use(adminOnly);
+    const totalUsers = await User.count();
+    
+    const activeUsers = await User.count({ 
+      where: { status: 'Active' } 
+    });
+    
+    const inactiveUsers = await User.count({ 
+      where: { status: 'Inactive' } 
+    });
 
-// User management routes
-router.post("/users", adminController.createUser);
-router.get("/users", adminController.getAllUsers);
-router.get("/users/stats/summary", adminController.getUserStats); // Make sure this line exists
-router.get("/users/:id", adminController.getUserById);
-router.get("/users/phone/:phone", adminController.getUserByPhone);
-router.put("/users/:id", adminController.updateUser);
-router.delete("/users/:id", adminController.deleteUser);
+    const subscriptionStats = await User.findAll({
+      attributes: [
+        'subscriptionType',
+        [sequelize.fn('COUNT', sequelize.col('subscriptionType')), 'count']
+      ],
+      group: ['subscriptionType']
+    });
 
-// Bulk operations
-router.post("/users/bulk", adminController.bulkCreateUsers);
+    const recentUsers = await User.count({
+      where: {
+        createdAt: {
+          [Op.gte]: new Date(new Date() - 30 * 24 * 60 * 60 * 1000) // Last 30 days
+        }
+      }
+    });
 
-module.exports = router;
+    res.json({
+      success: true,
+      stats: {
+        totalUsers,
+        activeUsers,
+        inactiveUsers,
+        recentUsers,
+        subscriptionBreakdown: subscriptionStats.reduce((acc, stat) => {
+          acc[stat.subscriptionType || 'Unknown'] = parseInt(stat.get('count'));
+          return acc;
+        }, {})
+      }
+    });
+
+  } catch (error) {
+    console.error("❌ Error fetching user stats:", error);
+    res.status(500).json({ 
+      success: false,
+      message: "Server error" 
+    });
+  }
+};

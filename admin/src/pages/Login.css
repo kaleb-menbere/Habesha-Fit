@@ -12,8 +12,20 @@
   border-radius: 20px;
   padding: 40px;
   width: 100%;
-  max-width: 400px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  max-width: 420px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .admin-login-header {
@@ -22,121 +34,76 @@
 }
 
 .admin-icon {
-  font-size: 48px;
+  font-size: 56px;
   color: #667eea;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 .admin-login-header h1 {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 5px;
+  font-size: 26px;
+  color: #2d3748;
+  margin-bottom: 8px;
+  font-weight: 700;
 }
 
 .admin-login-header p {
-  color: #666;
+  color: #718096;
   font-size: 14px;
 }
 
 .admin-error {
-  background: #fee;
-  color: #c33;
-  padding: 12px;
-  border-radius: 8px;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  padding: 14px 16px;
+  border-radius: 10px;
   margin-bottom: 20px;
   font-size: 14px;
-  text-align: center;
-}
-
-.admin-input-group {
-  margin-bottom: 20px;
-}
-
-.admin-input-group label {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  color: #555;
-  font-weight: 500;
+  gap: 10px;
+  animation: shake 0.5s ease;
 }
 
-.admin-input-group input {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 0.3s;
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
 }
 
-.admin-input-group input:focus {
-  outline: none;
-  border-color: #667eea;
+.admin-error svg {
+  font-size: 20px;
+  flex-shrink: 0;
 }
-
-.admin-input-group small {
-  display: block;
-  margin-top: 5px;
-  color: #888;
-  font-size: 12px;
-}
-
-.admin-btn {
-  width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.3s;
-}
-
-.admin-btn:hover {
-  opacity: 0.9;
-}
-
-.admin-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.admin-link-btn {
-  width: 100%;
-  padding: 10px;
-  background: none;
-  border: none;
-  color: #667eea;
-  font-size: 14px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.admin-link-btn:hover {
-  text-decoration: underline;
-}
-
-.admin-login-footer {
-  margin-top: 30px;
-  text-align: center;
-  color: #999;
-  font-size: 12px;
-}
-/* Add these styles to your existing Login.css */
 
 .admin-otp-message {
-  background: #f0f9ff;
-  border: 1px solid #bae6fd;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 16px;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
   gap: 12px;
   animation: slideIn 0.3s ease;
+}
+
+.admin-otp-message.development {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+}
+
+.admin-otp-message.success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
 }
 
 @keyframes slideIn {
@@ -152,13 +119,21 @@
 
 .otp-icon {
   font-size: 24px;
-  background: #e0f2fe;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+}
+
+.development .otp-icon {
+  background: #e0f2fe;
+}
+
+.success .otp-icon {
+  background: #dcfce7;
 }
 
 .otp-content {
@@ -166,106 +141,247 @@
 }
 
 .otp-content strong {
-  color: #0369a1;
   font-size: 14px;
   line-height: 1.5;
   display: block;
+  color: #0369a1;
 }
 
-.otp-content .otp-code {
-  font-size: 24px;
-  font-weight: bold;
-  color: #0284c7;
-  letter-spacing: 2px;
-  margin-top: 4px;
+.success .otp-content strong {
+  color: #166534;
 }
 
-/* Update existing styles */
-.admin-error {
-  background: #fee2e2;
-  border: 1px solid #fecaca;
-  color: #991b1b;
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  font-size: 14px;
+.otp-copy-btn {
+  background: #e0f2fe;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0369a1;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.otp-copy-btn:hover {
+  background: #bae6fd;
+}
+
+.admin-input-group {
+  margin-bottom: 24px;
+}
+
+.admin-input-group label {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 8px;
+  color: #4a5568;
+  font-weight: 600;
+  font-size: 14px;
 }
 
-.admin-error svg {
-  font-size: 18px;
+.input-with-indicator {
+  position: relative;
 }
 
-.admin-input-group input:focus {
+.input-with-indicator input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s;
+  padding-right: 100px;
+}
+
+.input-with-indicator input:focus {
+  outline: none;
   border-color: #667eea;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.admin-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  transition: transform 0.2s, box-shadow 0.2s;
+.input-with-indicator input.valid-phone {
+  border-color: #48bb78;
 }
 
-.admin-btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+.input-with-indicator input:disabled {
+  background: #f7fafc;
+  cursor: not-allowed;
+}
+
+.phone-indicator {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 20px;
+  background: #f7fafc;
+  color: #4a5568;
+}
+
+.admin-input-group input[type="text"],
+.admin-input-group input[type="tel"] {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.admin-input-group input[type="text"]:focus,
+.admin-input-group input[type="tel"]:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.admin-input-group input[type="text"]:disabled,
+.admin-input-group input[type="tel"]:disabled {
+  background: #f7fafc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.admin-input-group small {
+  display: block;
+  margin-top: 6px;
+  color: #a0aec0;
+  font-size: 12px;
+}
+
+.admin-button-group {
+  margin-top: 20px;
+}
+
+.admin-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.send-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.send-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.verify-btn {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  color: white;
+}
+
+.verify-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(72, 187, 120, 0.3);
+}
+
+.admin-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .admin-link-btn {
+  width: 100%;
+  padding: 12px;
+  background: none;
+  border: none;
   color: #667eea;
-  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 12px;
   transition: color 0.2s;
 }
 
-.admin-link-btn:hover {
+.admin-link-btn:hover:not(:disabled) {
   color: #764ba2;
   text-decoration: underline;
 }
 
-.admin-login-footer {
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid #e2e8f0;
-  text-align: center;
-  color: #94a3b8;
-  font-size: 12px;
-}
-
-/* Loading spinner for button */
-.admin-btn:disabled {
-  opacity: 0.7;
+.admin-link-btn:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-.admin-btn .spinner {
+.spinner {
   display: inline-block;
   width: 16px;
   height: 16px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   border-top-color: white;
-  animation: spin 1s ease-in-out infinite;
-  margin-right: 8px;
+  animation: spin 0.8s linear infinite;
+  margin-left: 8px;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-/* Responsive adjustments */
+.admin-login-footer {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.admin-login-footer p {
+  color: #94a3b8;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.admin-hint {
+  background: #f7fafc;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.admin-hint small {
+  color: #4a5568;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+/* Responsive */
 @media (max-width: 480px) {
   .admin-login-card {
-    padding: 24px;
+    padding: 30px 20px;
   }
   
-  .admin-otp-message {
-    flex-direction: column;
-    text-align: center;
+  .admin-icon {
+    font-size: 48px;
   }
   
-  .otp-icon {
-    margin-bottom: 8px;
+  .admin-login-header h1 {
+    font-size: 22px;
+  }
+  
+  .input-with-indicator input {
+    font-size: 14px;
+    padding-right: 80px;
+  }
+  
+  .phone-indicator {
+    font-size: 10px;
+    padding: 2px 6px;
   }
 }

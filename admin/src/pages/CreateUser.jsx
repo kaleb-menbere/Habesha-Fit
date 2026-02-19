@@ -22,7 +22,7 @@ export default function CreateUser() {
     email: '',
     age: '',
     gender: '',
-    subscriptionType: 'Trial',
+    subscription_type: 'Trial',
     status: 'Active',
     point: 0,
     productNumber: ''
@@ -136,7 +136,7 @@ export default function CreateUser() {
           <div className="form-grid">
             <div className="form-group">
               <label>Subscription Type</label>
-              <select name="subscriptionType" value={formData.subscriptionType} onChange={handleInputChange}>
+              <select name="subscriptionType" value={formData.subscription_type} onChange={handleInputChange}>
                 <option value="Trial">Trial</option>
                 <option value="Monthly">Monthly</option>
                 <option value="Yearly">Yearly</option>

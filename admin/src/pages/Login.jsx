@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiLock, FiPhone, FiLogIn, FiInfo } from 'react-icons/fi';
+import { FiLock, FiPhone, FiLogIn, FiInfo, FiSend } from 'react-icons/fi';
 import { RiAdminLine } from 'react-icons/ri';
 import useAuthStore from '../store/authStore';
 import { auth } from '../services/api';
@@ -14,11 +14,51 @@ export default function Login() {
   const [otp, setOtp] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [step, setStep] = useState('phone'); // phone or otp
   const [otpMessage, setOtpMessage] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  const handleRequestOTP = async (e) => {
-    e.preventDefault();
+  const adminPhones = ['911111111', '922222222', '923456789']; // Add your admin numbers
+
+  const validatePhone = (phone) => {
+    const cleanPhone = phone.replace(/\D/g, '');
+    return cleanPhone.length === 9;
+  };
+
+  const handlePhoneChange = (e) => {
+    const value = e.target.value.replace(/\D/g, '');
+    setPhone(value);
+    setError('');
+    setOtpMessage('');
+    
+    // Check if it's an admin number as they type
+    if (value.length === 9) {
+      setIsAdmin(adminPhones.includes(value));
+    } else {
+      setIsAdmin(false);
+    }
+  };
+
+  const handleSendOTP = async () => {
+    const cleanPhone = phone.replace(/\D/g, '');
+    
+    // Validate phone
+    if (!cleanPhone) {
+      setError('Phone number is required');
+      return;
+    }
+
+    if (cleanPhone.length !== 9) {
+      setError('Please enter a valid 9-digit phone number');
+      return;
+    }
+
+    // Check if admin
+    if (!adminPhones.includes(cleanPhone)) {
+      setError('This number is not authorized as admin');
+      return;
+    }
+
     setLoading(true);
     setError('');
     setOtpMessage('');
@@ -27,7 +67,7 @@ export default function Login() {
       const response = await fetch('http://localhost:5000/api/auth/request-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: phone.replace(/\D/g, '') })
+        body: JSON.stringify({ phone: cleanPhone })
       });
 
       const data = await response.json();
@@ -36,15 +76,17 @@ export default function Login() {
         throw new Error(data.message || 'Failed to send OTP');
       }
 
-      setStep('otp');
+      setOtpSent(true);
       
-      // Show OTP in a nice message (development only)
+      // Show OTP in development
       if (data.otp) {
-        setOtpMessage(`🔐 Development OTP: ${data.otp} - Use this to login`);
-        
-        // Auto-fill OTP for convenience (optional)
-        // setOtp(data.otp);
+        setOtpMessage(`🔐 Development OTP: ${data.otp}`);
+        // Auto-fill OTP for faster testing
+        setOtp(data.otp);
+      } else {
+        setOtpMessage('✅ OTP sent successfully! Check your phone.');
       }
+
     } catch (err) {
       setError(err.message);
     } finally {
@@ -52,31 +94,33 @@ export default function Login() {
     }
   };
 
-  const handleVerifyOTP = async (e) => {
-    e.preventDefault();
+  const handleVerifyOTP = async () => {
+    if (!otp || otp.length !== 4) {
+      setError('Please enter a valid 4-digit OTP');
+      return;
+    }
+
     setLoading(true);
     setError('');
-    setOtpMessage('');
 
     try {
       const cleanPhone = phone.replace(/\D/g, '');
       const response = await auth.login(cleanPhone, otp);
       
-      // Check if user is admin
-      const adminPhones = ['911111111', '922222222'];
-      const isAdmin = adminPhones.includes(cleanPhone);
-      
-      if (!isAdmin) {
-        throw new Error('Not authorized as admin');
-      }
-
       login(response.data.user, response.data.token);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || err.message);
+      setError(err.response?.data?.message || 'Invalid OTP');
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleReset = () => {
+    setOtpSent(false);
+    setOtp('');
+    setOtpMessage('');
+    setError('');
   };
 
   return (
@@ -95,74 +139,100 @@ export default function Login() {
         )}
 
         {otpMessage && (
-          <div className="admin-otp-message">
-            <span className="otp-icon">📱</span>
+          <div className={`admin-otp-message ${otpMessage.includes('🔐') ? 'development' : 'success'}`}>
+            <span className="otp-icon">{otpMessage.includes('🔐') ? '🔐' : '✅'}</span>
             <div className="otp-content">
               <strong>{otpMessage}</strong>
             </div>
+            {otpMessage.includes('🔐') && (
+              <button className="otp-copy-btn" onClick={() => navigator.clipboard.writeText(otp)}>
+                Copy
+              </button>
+            )}
           </div>
         )}
 
-        {step === 'phone' ? (
-          <form onSubmit={handleRequestOTP}>
-            <div className="admin-input-group">
-              <label>
-                <FiPhone /> Admin Phone Number
-              </label>
-              <input
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
-                placeholder="911111111"
-                maxLength="9"
-                required
-                autoFocus
-              />
-              <small>Use admin phone: 911111111</small>
-            </div>
+        <div className="admin-input-group">
+          <label>
+            <FiPhone /> Admin Phone Number
+          </label>
+          <div className="input-with-indicator">
+            <input
+              type="tel"
+              value={phone}
+              onChange={handlePhoneChange}
+              placeholder="911111111"
+              maxLength="9"
+              required
+              disabled={otpSent}
+              className={isAdmin ? 'valid-phone' : ''}
+            />
+            {phone.length === 9 && (
+              <span className="phone-indicator">
+                {isAdmin ? '👑 Admin' : '❌ Not Admin'}
+              </span>
+            )}
+          </div>
+          <small>Enter your 9-digit Ethiopian phone number</small>
+        </div>
 
-            <button type="submit" disabled={loading} className="admin-btn">
-              {loading ? 'Sending...' : 'Send OTP'}
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleVerifyOTP}>
-            <div className="admin-input-group">
-              <label>
-                <FiLock /> Enter OTP
-              </label>
-              <input
-                type="text"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                placeholder="1234"
-                maxLength="4"
-                required
-                autoFocus
-              />
-              <small>Enter the 4-digit OTP shown above</small>
-            </div>
+        <div className="admin-input-group">
+          <label>
+            <FiLock /> OTP Code
+          </label>
+          <input
+            type="text"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 4))}
+            placeholder="Enter 4-digit OTP"
+            maxLength="4"
+            disabled={!otpSent}
+          />
+          <small>OTP will be sent to your phone</small>
+        </div>
 
-            <button type="submit" disabled={loading} className="admin-btn">
-              {loading ? 'Verifying...' : 'Login to Admin'}
-            </button>
-
+        <div className="admin-button-group">
+          {!otpSent ? (
             <button 
-              type="button" 
-              onClick={() => {
-                setStep('phone');
-                setOtpMessage('');
-                setOtp('');
-              }} 
-              className="admin-link-btn"
+              onClick={handleSendOTP} 
+              disabled={loading || phone.length !== 9 || !isAdmin} 
+              className="admin-btn send-btn"
             >
-              ← Back to Phone Number
+              {loading ? (
+                <>Sending... <span className="spinner"></span></>
+              ) : (
+                <>Send OTP <FiSend /></>
+              )}
             </button>
-          </form>
-        )}
+          ) : (
+            <>
+              <button 
+                onClick={handleVerifyOTP} 
+                disabled={loading || otp.length !== 4} 
+                className="admin-btn verify-btn"
+              >
+                {loading ? (
+                  <>Verifying... <span className="spinner"></span></>
+                ) : (
+                  <>Login to Admin <FiLogIn /></>
+                )}
+              </button>
+              <button 
+                onClick={handleReset} 
+                className="admin-link-btn"
+                disabled={loading}
+              >
+                ← Use different number
+              </button>
+            </>
+          )}
+        </div>
 
         <div className="admin-login-footer">
           <p>⚠️ Admin access only • Unauthorized access is prohibited</p>
+          <div className="admin-hint">
+            <small>Admin numbers: 911111111, 922222222</small>
+          </div>
         </div>
       </div>
     </div>
